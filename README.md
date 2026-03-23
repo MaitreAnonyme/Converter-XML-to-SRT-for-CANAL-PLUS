@@ -17,4 +17,5 @@ Which script to use:
 - "w1_s_stl_1_eng_0.mp4" (SDH ENG)
 
 "Converter.XML.to.SRT.for.CANAL.VOD.OLD.py" :
-- "cplay_XXXXXXX" (Full FR / SDH FR)
+- "cplay_XXXXXXX_1_TRD" (Full FR)
+- "cplay_XXXXXXX_1_SRD" (SDH FR)
