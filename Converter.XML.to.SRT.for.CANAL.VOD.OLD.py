@@ -48,6 +48,9 @@ def process_file(filepath):
     style_color_re = re.compile(r"<style\s+xml:id=['\"]([^'\"]+)['\"][^>]*tts:color=['\"]#([0-9a-fA-F]{6})[0-9a-fA-F]{2}['\"]", re.IGNORECASE)
     style_align_re = re.compile(r"<style\s+xml:id=['\"]([^'\"]+)['\"][^>]*tts:textAlign=['\"](start|left|center|end|right)['\"]", re.IGNORECASE)
     
+    # NOUVEAU : Regex pour cibler spécifiquement les balises <p ... /> vides
+    empty_p_tag_re = re.compile(r"<p\s+[^>]*/>", re.IGNORECASE)
+    
     p_tag_re = re.compile(r"<p\s+[^>]*begin=['\"]([\d:\.]+)['\"]\s+end=['\"]([\d:\.]+)['\"][^>]*style=['\"]([^'\"]+)['\"][^>]*>(.*?)</p>", re.IGNORECASE | re.DOTALL)
     span_tag_re = re.compile(r"<span\s+[^>]*style=['\"]([^'\"]+)['\"][^>]*'preserve'>(.*?)</span>", re.IGNORECASE | re.DOTALL)
     br_tag_re = re.compile(r"<br\s*/?>", re.IGNORECASE)
@@ -66,6 +69,9 @@ def process_file(filepath):
     for segment in segments:
         if not segment.strip():
             continue
+            
+        # --- NOUVEAU : Nettoyer le segment en supprimant les balises <p ... /> vides pour éviter le décalage
+        segment = empty_p_tag_re.sub("", segment)
             
         # 1. Mise à jour des styles depuis l'en-tête (écrase les précédents si même ID)
         for match in style_color_re.finditer(segment):
